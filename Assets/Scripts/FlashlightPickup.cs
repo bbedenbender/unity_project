@@ -17,6 +17,10 @@ public class FlashlightPickup : MonoBehaviour
     public KeyCode pickupKey = KeyCode.E;
     public KeyCode toggleKey = KeyCode.F;
 
+    [Header("Floor Start Behavior")]
+    [Tooltip("Keeps the flashlight from falling, sliding, or spinning before pickup.")]
+    public bool freezeBeforePickup = true;
+
     [Header("Held Transform")]
     public Vector3 heldLocalPosition = Vector3.zero;
     public Vector3 heldLocalRotation = new Vector3(0f, 90f, 0f);
@@ -28,12 +32,27 @@ public class FlashlightPickup : MonoBehaviour
 
     private bool isPickedUp = false;
     private bool lightIsOn = true;
+    private Rigidbody rb;
 
     public bool IsPickedUp => isPickedUp;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     private void Start()
     {
         SetAllLights(startOn);
+
+        // Important: preserve the scene placement/orientation on the floor.
+        if (freezeBeforePickup && rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
     }
 
     private void Update()
@@ -67,7 +86,6 @@ public class FlashlightPickup : MonoBehaviour
     {
         isPickedUp = true;
 
-        Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.isKinematic = true;
@@ -77,6 +95,7 @@ public class FlashlightPickup : MonoBehaviour
         }
 
         Collider[] colliders = GetComponentsInChildren<Collider>();
+
         foreach (Collider col in colliders)
         {
             col.enabled = false;
