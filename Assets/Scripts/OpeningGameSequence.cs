@@ -212,6 +212,7 @@ public class OpeningGameSequence : MonoBehaviour
 
             RenderSettings.ambientLight = Color.Lerp(daytimeAmbientColor, Color.black, t);
             RenderSettings.fogColor = Color.Lerp(daytimeFogColor, Color.black, t);
+            RenderSettings.fogDensity = Mathf.Lerp(daytimeFogDensity, blackSkyFogDensity, t);
 
             if (directionalLight != null)
             {
@@ -258,13 +259,18 @@ public class OpeningGameSequence : MonoBehaviour
 
         if (lightningFlashLight != null)
         {
+            lightningFlashLight.enabled = true;
             lightningFlashLight.intensity = 0f;
             lightningFlashLight.range = lightningRange;
         }
+
+        Debug.Log("OPENING: BLACK SKYBOX APPLIED");
     }
 
     private IEnumerator RevealBlackSky()
     {
+        ApplyBlackSkyScene();
+
         float elapsed = 0f;
 
         while (elapsed < blackSkyRevealTime)
@@ -272,18 +278,20 @@ public class OpeningGameSequence : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / blackSkyRevealTime);
 
+            ApplyBlackSkyScene();
             SetImageAlpha(blackFadeImage, Mathf.Lerp(1f, 0f, t));
 
             yield return null;
         }
 
+        ApplyBlackSkyScene();
         SetImageAlpha(blackFadeImage, 0f);
     }
 
     private IEnumerator PlayLightningOnBlackSky()
     {
-        // Force black sky for the entire lightning VFX sequence.
         ApplyBlackSkyScene();
+
         SetImageAlpha(blackFadeImage, 0f);
         SetImageAlpha(whiteFlashImage, 0f);
 
@@ -300,21 +308,32 @@ public class OpeningGameSequence : MonoBehaviour
             lightningFlashLight.intensity = lightningIntensity;
         }
 
+        Debug.Log("OPENING: LIGHTNING STARTED ON BLACK SKYBOX");
+
         float elapsed = 0f;
 
         while (elapsed < lightningDuration)
         {
             elapsed += Time.deltaTime;
 
-            // Keep black sky locked. This prevents jumping back to daylight.
+            // Hard-lock the black sky for the full lightning VFX duration.
             if (blackSkybox != null)
             {
                 RenderSettings.skybox = blackSkybox;
             }
 
+            RenderSettings.ambientMode = AmbientMode.Flat;
             RenderSettings.ambientLight = Color.black;
+
+            RenderSettings.fog = true;
             RenderSettings.fogColor = Color.black;
             RenderSettings.fogDensity = blackSkyFogDensity;
+
+            if (directionalLight != null)
+            {
+                directionalLight.enabled = false;
+                directionalLight.intensity = 0f;
+            }
 
             if (pulseLightning && lightningFlashLight != null)
             {
@@ -328,7 +347,6 @@ public class OpeningGameSequence : MonoBehaviour
 
     private IEnumerator WhiteFlashSwitchToCurrentSkyAndOrb()
     {
-        // Full white flash at the end of the lightning sequence.
         SetImageAlpha(whiteFlashImage, 1f);
 
         if (lightningFlashLight != null)
@@ -344,9 +362,10 @@ public class OpeningGameSequence : MonoBehaviour
 
         TriggerRagdollOrFallbackKnockback();
 
-        // While screen is white, switch to current skybox and begin orb fade.
         ApplyCurrentGameSkyScene();
         StartCoroutine(FadeInOrbAndPlasma());
+
+        Debug.Log("OPENING: CURRENT/NIGHT SKYBOX APPLIED DURING WHITE FLASH");
 
         yield return new WaitForSeconds(whiteFlashHoldTime);
 

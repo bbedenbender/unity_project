@@ -872,9 +872,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerRoot: {fileID: 0}
   playerController: {fileID: 597780231}
-  cameraFollow: {fileID: 250944944}
+  cameraFollow: {fileID: 0}
   daytimeSkybox: {fileID: 2100000, guid: 255e100e51a4e3a859648209fbc41b77, type: 2}
-  blackSkybox: {fileID: 0}
+  blackSkybox: {fileID: 2100000, guid: f642723a8e777dfd2a54438faa10fdb4, type: 2}
   currentGameSkybox: {fileID: 2100000, guid: 13ae962f70c951787abe1b88b4343774, type: 2}
   directionalLight: {fileID: 575453213}
   daytimeAmbientColor: {r: 0.65, g: 0.65, b: 0.65, a: 1}
@@ -883,10 +883,10 @@ MonoBehaviour:
   daytimeFogColor: {r: 0.55, g: 0.65, b: 0.75, a: 1}
   blackFogColor: {r: 0, g: 0, b: 0, a: 1}
   currentGameFogColor: {r: 0, g: 0, b: 0, a: 1}
-  daytimeFogDensity: 0.01
+  daytimeFogDensity: 0.005
   blackSkyFogDensity: 0
   currentGameFogDensity: 0.333
-  blackFadeImage: {fileID: 2013152356}
+  blackFadeImage: {fileID: 0}
   whiteFlashImage: {fileID: 0}
   daylightHoldTime: 3
   fadeToBlackTime: 2.5
@@ -895,17 +895,17 @@ MonoBehaviour:
   lightningDuration: 4
   whiteFlashHoldTime: 0.75
   whiteFlashFadeTime: 1.5
-  delayBeforeReturnControl: 0.5
+  delayBeforeReturnControl: 1.5
   lightningObject: {fileID: 1660571864}
   lightningFlashLight: {fileID: 1905802507}
   lightningAudio: {fileID: 103016552}
   lightningIntensity: 30000
-  lightningBlastIntensity: 900
-  lightningRange: 500
+  lightningBlastIntensity: 60000
+  lightningRange: 5000
   scaleLightningAtRuntime: 1
   lightningScaleMultiplier: 15
   pulseLightning: 1
-  pulseSpeed: 8
+  pulseSpeed: 10
   pulseVariation: 7000
   possessionOrb: {fileID: 2111811}
   orbFadeTime: 1.5
@@ -5453,6 +5453,10 @@ PrefabInstance:
     - target: {fileID: 1957592409648599577, guid: 3ce62e84dab46f54a9c51523f8057ac0, type: 3}
       propertyPath: m_Name
       value: Plasma Sphere (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1957592409648599577, guid: 3ce62e84dab46f54a9c51523f8057ac0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2982633330520388111, guid: 3ce62e84dab46f54a9c51523f8057ac0, type: 3}
       propertyPath: m_LocalPosition.x
