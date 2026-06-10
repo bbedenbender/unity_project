@@ -23,6 +23,8 @@ public class BookMonsterAI : MonoBehaviour
     public float patrolSpeed = 1.8f;
     public float chaseSpeed = 3.2f;
     public float waitAtPointTime = 1.5f;
+    public float patrolStoppingDistance = 0.25f;
+    public float chaseStoppingDistance = 1.25f;
     public bool useCrawlWhenChasing = true;
 
     [Header("Attack")]
@@ -33,7 +35,8 @@ public class BookMonsterAI : MonoBehaviour
     public Animator animator;
     public string speedParameter = "Speed";
     public string crawlParameter = "Crawl";
-    public string attackTrigger = "Attack";
+    public string attackTrigger = "";
+    public float animationSpeedChangeRate = 6f;
 
     private NavMeshAgent agent;
     private MonsterState currentState = MonsterState.Patrol;
@@ -41,37 +44,38 @@ public class BookMonsterAI : MonoBehaviour
     private int currentPatrolIndex = 0;
     private float waitTimer = 0f;
     private float attackTimer = 0f;
+    private float animatorSpeed = 0f;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
 
         if (animator == null)
-        {
             animator = GetComponentInChildren<Animator>();
-        }
+
+        if (animator != null)
+            animator.applyRootMotion = false;
     }
 
     private void Start()
     {
         if (agent == null)
         {
-            Debug.LogError("BookMonsterAI requires a NavMeshAgent on the same GameObject as this script.");
+            Debug.LogError("BookMonsterAI requires a NavMeshAgent on BookHeadMonster_ROOT.");
             enabled = false;
             return;
         }
 
         if (!agent.isOnNavMesh)
         {
-            Debug.LogWarning("BookMonsterAI: NavMeshAgent is not on a NavMesh. Move BookHeadMonster_ROOT onto the baked blue NavMesh area.");
-            UpdateAnimation(0f);
+            Debug.LogWarning("BookMonsterAI: NavMeshAgent is not on a NavMesh. Move BookHeadMonster_ROOT onto the baked NavMesh.");
             return;
         }
 
+        agent.stoppingDistance = patrolStoppingDistance;
+
         if (patrolPoints != null && patrolPoints.Length > 0)
-        {
             GoToNextPatrolPoint();
-        }
     }
 
     private void Update()
@@ -81,7 +85,7 @@ public class BookMonsterAI : MonoBehaviour
 
         if (!agent.isOnNavMesh)
         {
-            UpdateAnimation(0f);
+            UpdateAnimation(false);
             return;
         }
 
@@ -117,8 +121,8 @@ public class BookMonsterAI : MonoBehaviour
                 break;
         }
 
-        float currentSpeed = agent.isOnNavMesh ? agent.velocity.magnitude : 0f;
-        UpdateAnimation(currentSpeed);
+        bool shouldAnimateMoving = ShouldAnimateMoving();
+        UpdateAnimation(shouldAnimateMoving);
     }
 
     private void Patrol()
@@ -131,8 +135,9 @@ public class BookMonsterAI : MonoBehaviour
 
         agent.isStopped = false;
         agent.speed = patrolSpeed;
+        agent.stoppingDistance = patrolStoppingDistance;
 
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance + 0.05f)
         {
             waitTimer += Time.deltaTime;
 
@@ -156,9 +161,7 @@ public class BookMonsterAI : MonoBehaviour
 
         if (nextPoint != null)
         {
-            NavMeshHit hit;
-
-            if (NavMesh.SamplePosition(nextPoint.position, out hit, 2f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(nextPoint.position, out NavMeshHit hit, 2f, NavMesh.AllAreas))
             {
                 agent.SetDestination(hit.position);
             }
@@ -171,9 +174,7 @@ public class BookMonsterAI : MonoBehaviour
         currentPatrolIndex++;
 
         if (currentPatrolIndex >= patrolPoints.Length)
-        {
             currentPatrolIndex = 0;
-        }
     }
 
     private void ChasePlayer()
@@ -186,17 +187,12 @@ public class BookMonsterAI : MonoBehaviour
 
         agent.isStopped = false;
         agent.speed = chaseSpeed;
+        agent.stoppingDistance = chaseStoppingDistance;
 
-        NavMeshHit hit;
-
-        if (NavMesh.SamplePosition(player.position, out hit, 2f, NavMesh.AllAreas))
-        {
+        if (NavMesh.SamplePosition(player.position, out NavMeshHit hit, 2f, NavMesh.AllAreas))
             agent.SetDestination(hit.position);
-        }
         else
-        {
             agent.SetDestination(player.position);
-        }
     }
 
     private void AttackPlayer()
@@ -219,12 +215,30 @@ public class BookMonsterAI : MonoBehaviour
             attackTimer = 0f;
 
             if (animator != null && !string.IsNullOrEmpty(attackTrigger))
-            {
                 animator.SetTrigger(attackTrigger);
-            }
 
             Debug.Log("Book monster attacked the player for " + attackDamage + " damage.");
         }
+    }
+
+    private bool ShouldAnimateMoving()
+    {
+        if (agent == null || !agent.isOnNavMesh)
+            return false;
+
+        if (agent.isStopped || currentState == MonsterState.Attack)
+            return false;
+
+        if (agent.pathPending)
+            return false;
+
+        if (!agent.hasPath)
+            return false;
+
+        if (agent.remainingDistance <= agent.stoppingDistance + 0.05f)
+            return false;
+
+        return agent.desiredVelocity.sqrMagnitude > 0.01f || agent.velocity.sqrMagnitude > 0.01f;
     }
 
     private void FacePlayer()
@@ -242,15 +256,20 @@ public class BookMonsterAI : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 8f);
     }
 
-    private void UpdateAnimation(float speed)
+    private void UpdateAnimation(bool moving)
     {
         if (animator == null)
             return;
 
+        float targetSpeed = moving ? 1f : 0f;
+        animatorSpeed = Mathf.MoveTowards(
+            animatorSpeed,
+            targetSpeed,
+            animationSpeedChangeRate * Time.deltaTime
+        );
+
         if (!string.IsNullOrEmpty(speedParameter))
-        {
-            animator.SetFloat(speedParameter, speed);
-        }
+            animator.SetFloat(speedParameter, animatorSpeed);
 
         if (!string.IsNullOrEmpty(crawlParameter))
         {
