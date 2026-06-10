@@ -15177,14 +15177,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7275356478698212510, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7275356478698212510, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7275356478698212510, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -7275356478698212510, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -7275356478698212510, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: -7275356478698212510, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -1613345622734479886, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 131550cdb5e634058bd5059c84bc4c04, type: 2}
     - target: {fileID: 919132149155446097, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
       propertyPath: m_Name
       value: Mummy_Model
       objectReference: {fileID: 0}
+    - target: {fileID: 4322740433288995510, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 131550cdb5e634058bd5059c84bc4c04, type: 2}
     - target: {fileID: 5866666021909216657, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 9000000, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
+    - target: {fileID: 5866666021909216657, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 569b4cbf7598705be9bd6b6184a4382f, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
