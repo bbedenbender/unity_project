@@ -6356,13 +6356,13 @@ MonoBehaviour:
   patrolSpeed: 1.8
   chaseSpeed: 3.2
   waitAtPointTime: 1.5
+  useCrawlWhenChasing: 1
   attackCooldown: 1.5
   attackDamage: 1
   animator: {fileID: 1923043520}
   speedParameter: Speed
   crawlParameter: Crawl
-  attackTrigger: Attack
-  crawlWhenChasing: 1
+  attackTrigger: 
 --- !u!195 &977563934
 NavMeshAgent:
   m_ObjectHideFlags: 0
