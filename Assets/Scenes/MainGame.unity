@@ -2467,6 +2467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 311654144}
   - component: {fileID: 311654145}
+  - component: {fileID: 311654146}
   m_Layer: 0
   m_Name: Flashlight_PlasmaLight
   m_TagString: Untagged
@@ -2554,6 +2555,29 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &311654146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 311654143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1001 &339994205
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14791,6 +14815,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1684564447}
   - component: {fileID: 1684564448}
+  - component: {fileID: 1684564449}
   m_Layer: 0
   m_Name: Flashlight_Light
   m_TagString: Untagged
@@ -14826,8 +14851,8 @@ Light:
   m_Color: {r: 0.9622642, g: 0.9245557, b: 0.63545746, a: 1}
   m_Intensity: 25
   m_Range: 150
-  m_SpotAngle: 65
-  m_InnerSpotAngle: 1
+  m_SpotAngle: 83.88884
+  m_InnerSpotAngle: 19.888887
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
@@ -14878,6 +14903,29 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!114 &1684564449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684564446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1001 &1705959222
 PrefabInstance:
   m_ObjectHideFlags: 0
